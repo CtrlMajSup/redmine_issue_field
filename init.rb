@@ -3,8 +3,8 @@ Redmine::Plugin.register :redmine_issue_field do
   author 'CtrlMajSup'
   description 'This is a plugin for Redmine 6, it add a customfield type as issue'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+  url 'https://github.com/CtrlMajSup/redmine_issue_field'
+  author_url 'https://github.com/CtrlMajSup/redmine_issue_field'
 
 
   Rails.application.config.after_initialize do
