@@ -1,0 +1,5 @@
+<% if custom_field.field_format == 'issue' %>
+  <p>
+    <%= f.select :tracker_filter, Tracker.all.collect { |t| [t.name, t.id] }, { include_blank: true }, { multiple: true }  %>
+  </p>
+<% end %>

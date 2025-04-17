@@ -1,0 +1,34 @@
+- options ||= {}
+javascript:
+  $(function() {
+    $("#{defined?(field_id) ? ('#' + field_id) : ('.' + field_class)}").select2({
+      ajax: {
+        url: "#{ajax_url}",
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+          return {
+            q: params.term,
+          };
+        },
+        processResults: function(data, params) {
+          return {
+            results: data
+          };
+        },
+        cache: true
+      },
+      placeholder: "#{options[:placeholder].presence}",
+      allowClear: #{options[:allow_clear].present? && options[:allow_clear] ? 'true' : 'false'},
+      minimumInputLength: 0,
+      width: "#{options[:width].presence || '90%'}",
+      templateResult: function(data) {
+        if (data.loading) return data.text;
+        var $result = $('<span>' + data.subject +" #"+ data.id + '</span>');
+        return $result;
+      },
+      templateSelection: function(data) {
+        return data.subject || data.text;
+      }
+    })
+  })
