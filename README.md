@@ -13,6 +13,7 @@ It allows you to create custom fields that reference other issues — similar to
 - Enables creating **multiple** issue-type custom fields on the same issue
 - Selected issues are displayed as **clickable links**
 - Provides a search tool to easily find and select the desired issue
+- Integrates with Redmine's filter system (e.g., on issue list, saved queries, etc.)
 
 ## Why use it?
 
