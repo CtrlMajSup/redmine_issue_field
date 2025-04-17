@@ -1,11 +1,10 @@
-Voici un README en anglais structuré, clair et informatif pour ton plugin Redmine :
-
----
-
 # Redmine Issue Field
 
 **Redmine Issue Field** is a Redmine plugin that introduces a new custom field format: **Issue**.  
 It allows you to create custom fields that reference other issues — similar to Redmine's built-in issue relations, but with more flexibility.
+
+![image](https://github.com/user-attachments/assets/5a1f8cc1-5a45-469c-9f3c-8b3adf61c580)
+
 
 ## Features
 
