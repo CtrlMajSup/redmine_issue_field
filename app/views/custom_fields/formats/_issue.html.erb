@@ -1,5 +1,12 @@
 <% if custom_field.field_format == 'issue' %>
   <p>
-    <%= f.select :tracker_filter, Tracker.all.collect { |t| [t.name, t.id] }, { include_blank: true }, { multiple: true }  %>
+    <label><%= l(:label_tracker) %></label>
+    <%= f.collection_check_boxes :tracker_filter, Tracker.all, :id, :name, 
+                                 { selected: custom_field.tracker_filter } do |b| %>
+      <p>
+        <%= b.check_box %>
+        <%= b.label %>
+      </p>
+    <% end %>
   </p>
 <% end %>
