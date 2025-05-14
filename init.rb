@@ -11,5 +11,7 @@ Redmine::Plugin.register :redmine_issue_field do
     RedmineIssueField.apply_new_format
     RedmineIssueField.setup_controller_patches
   end
-
+CustomField.safe_attributes(
+  'tracker_filter',
+)
 end
