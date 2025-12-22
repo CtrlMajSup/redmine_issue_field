@@ -17,7 +17,6 @@ module RedmineIssueField
           # e.g. ActionView::Template::Error (no implicit conversion of DbEntry::ActiveRecord_Relation into String)
           option_tags = ''
         end
-  
         ajax_params = options.delete(:ajax_params) || {}
         if options[:project].present?
           ajax_params[:project_id] = options[:project]
@@ -28,7 +27,7 @@ module RedmineIssueField
         if options[:tracker_filter].present?
           ajax_params[:tracker_filter] = options[:tracker_filter]
         end
-  
+
         s = []
         s << hidden_field_tag("#{name}[]", '') if options[:multiple]
         s << select_tag(name,

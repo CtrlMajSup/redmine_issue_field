@@ -1,12 +1,41 @@
+
+<%
+require 'json'
+
+raw = custom_field.format_store["tracker_filter"]
+
+filtre_tracker =
+  case raw
+  when Array
+    raw
+  when String
+    begin
+      # Si c'est du JSON, on parse
+      parsed = JSON.parse(raw)
+      parsed.is_a?(Array) ? parsed : []
+    rescue JSON::ParserError
+      # Sinon on découpe par séparateurs
+      raw.split(/[,\s;|]+/)
+    end
+  else
+    []
+  end
+
+# Nettoyage + normalisation en **String** (voir explication plus bas)
+filtre_tracker = filtre_tracker.reject(&:blank?).map(&:to_s)
+%>
+
 <% if custom_field.field_format == 'issue' %>
   <p>
     <label><%= l(:label_tracker) %></label>
-    <%= f.collection_check_boxes :tracker_filter, Tracker.all, :id, :name, 
-                                 { selected: custom_field.tracker_filter } do |b| %>
+
+    <%= f.collection_check_boxes :tracker_filter, Tracker.all, :id, :name, include_hidden: false do |b| %>
+      <% value = b.value.to_s %>
       <p>
-        <%= b.check_box %>
+        <%= b.check_box(checked: filtre_tracker.include?(value)) %>
         <%= b.label %>
       </p>
     <% end %>
   </p>
 <% end %>
+``

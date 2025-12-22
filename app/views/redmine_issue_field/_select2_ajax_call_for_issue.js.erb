@@ -1,0 +1,43 @@
+
+<%# Dans ta vue .html.erb %>
+<% options ||= {} %>
+
+<script>
+  $(function() {
+    const selector = "<%= defined?(field_id) ? "##{field_id}" : ".#{field_class}" %>";
+
+    $(selector).select2({
+      ajax: {
+        url: "<%= ajax_url %>",
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+          return { q: params.term };
+        },
+        processResults: function(data, params) {
+          return { results: data };
+        },
+        cache: true
+      },
+
+      // Placeholders peuvent être string ou null
+      placeholder: "<%= options[:placeholder].presence %>",
+
+      // IMPORTANT : booléens JavaScript (sans guillemets)
+      allowClear: <%= (options[:allow_clear].present? && options[:allow_clear]) ? 'true' : 'false' %>,
+
+      minimumInputLength: 0,
+      width: "<%= options[:width].presence || '90%' %>",
+
+      templateResult: function(data) {
+        if (data.loading) return data.text;
+        // Pas d'entités HTML ici, on renvoie un vrai fragment jQuery
+        return $('<span>' + (data.subject || '') + ' #' + data.id + '</span>');
+      },
+
+      templateSelection: function(data) {
+        return data.subject || data.text;
+      }
+    });
+  });
+</script>

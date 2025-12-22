@@ -47,28 +47,40 @@ module RedmineIssueField
         end
   
   
+
+
         def edit_tag(view, tag_id, tag_name, custom_value, **options)
-          extra_options = { id: tag_id,
-                            multiple: custom_value.custom_field.multiple,
-                            placeholder: nil}
-  
-          # Ajoutez tracker_filter uniquement si custom_value.custom_field.tracker_filter est présent
-          if custom_value.custom_field.tracker_filter.present?
-            tracker_filter = custom_value.custom_field.tracker_filter.reject(&:blank?).map(&:to_i)
-            extra_options[:tracker_filter] = tracker_filter if tracker_filter.any?
+          extra_options = {
+            id: tag_id,
+            multiple: custom_value.custom_field.multiple,
+            placeholder: nil
+          }
+
+          # 1) Récupérer et nettoyer la liste des trackers depuis format_store
+          filtre_tracker = Array(custom_value.custom_field.format_store["tracker_filter"])
+                            .reject(&:blank?)   # supprime les vides
+                            .map(&:to_i)        # convertit en Integer
+
+          # 2) Exposer le filtre côté front (data-attributes), pas dans le name !
+          if filtre_tracker.present?
+            extra_options[:tracker_filter] = filtre_tracker
           end
-  
+
           unless custom_value.custom_field.is_required
             extra_options[:include_blank] = true
-            extra_options[:allow_clear] = true
+            extra_options[:allow_clear]   = true
           end
-  
-          issues = Issue.where id: custom_value.value if Array(custom_value.value).compact_blank.any?
-          view.autocomplete_select_issues(tag_name,
-                                           'autocomplete_issues',
-                                           issues,
-                                           **options.merge(extra_options))
+
+          issues = Issue.where(id: custom_value.value) if Array(custom_value.value).compact_blank.any?
+
+          view.autocomplete_select_issues(
+            tag_name,
+            'autocomplete_issues',
+            issues,
+            **options.merge(extra_options)
+          )
         end
+
   
         def validate_custom_value(_custom_value)
           # Ici vous pouvez ajouter une logique de validation si nécessaire
